@@ -1,6 +1,6 @@
 "use client"
 
-
+import { useKeycloak } from '@react-keycloak/web'
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa"
 import {useRef} from "react";
@@ -9,6 +9,7 @@ import {useRouter} from "next/navigation";
 export default function Navigation(account=null) {
     const searchBar = useRef();
     const {router} = useRouter();
+    const { keycloak, initialized } = useKeycloak();
 
     return (
         <nav className={`p-4 bg-gray-800 text-white flex justify-between`}>
@@ -25,6 +26,11 @@ export default function Navigation(account=null) {
                     router.push("/{searchBar.current.value}");
                 }} className={"bg-black p-2 h-10 relative border-2 border-white border-b-4 hover:border-b-2 active:bg-gray-700"}><FaSearch color={"white"}/></button>
             </div>
+            {keycloak.authenticated && keycloak.hasRealmRole("admin") && keycloak.hasRealmRole("verifiedCompany") && (
+                <button onClick={() => router.push("/create")}>
+                    + Add new code
+                </button>
+            )}
             <div>
                 {account && (
                     <div className={"flex flex-col justify-between"}>
