@@ -5,7 +5,6 @@ import axios from "axios";
 
 export default function Post({id, author, code, description, date}) {
     const copyButton = useRef();
-    const { keycloak, initialized } = useKeycloak();
 
     const copyCode = () => {
         navigator.clipboard.writeText(code).then(() => {

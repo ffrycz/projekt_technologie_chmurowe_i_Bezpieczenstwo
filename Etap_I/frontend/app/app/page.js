@@ -1,3 +1,4 @@
+'use client'
 import PostsList from "./components/PostsList";
 import {useEffect, useState} from "react";
 import axios from "axios";

@@ -1,3 +1,4 @@
+"use client"
 import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -34,7 +35,7 @@ export default function CreatePostPage() {
 
     return (
         <main>
-            {keycloak.authenticated && keycloak.hasRealmRole("admin") && keycloak.hasRealmRole("verifiedCompany") ? (
+            {keycloak.authenticated && keycloak.hasRealmRole("admin") || keycloak.hasRealmRole("verified_company") ? (
                 <div className={"w-64 h-max m-10 p-6 flex flex-col items-center rounded bg-black z-10"}>
                     <h1 className={"text-3xl m-3"}>Create a post</h1>
                     { failed && (

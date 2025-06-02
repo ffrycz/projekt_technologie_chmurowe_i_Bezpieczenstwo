@@ -1,6 +1,7 @@
+'use client'
 import {FixedSizeList} from "react-window";
-import {React} from "next/dist/server/route-modules/app-page/vendored/rsc/entrypoints";
 import Post from "@/app/components/Post";
+import React from "react";
 
 export default function PostsList({posts}) {
     const renderRow = ({ index, style }) => {
