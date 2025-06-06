@@ -26,8 +26,10 @@ export default function Navigation(account=null) {
                     router.push("/{searchBar.current.value}");
                 }} className={"bg-black p-2 h-10 relative border-2 border-white border-b-4 hover:border-b-2 active:bg-gray-700"}><FaSearch color={"white"}/></button>
             </div>
+            <div className={"flex flex-col"}>
+            <p className={"text-xl font-bold"}>Witaj {keycloak.tokenParsed?.preferred_username}!</p>
             {keycloak.authenticated && keycloak.hasRealmRole("admin") || keycloak.hasRealmRole("verified_company") && (
-                <button onClick={() => {
+                <button className={"bg-blue-800 rounded-2xl mt-2"} onClick={() => {
                     router.push("/create")
                 }}>
                     + Add new code
@@ -41,6 +43,8 @@ export default function Navigation(account=null) {
                     </div>
                 )}
             </div>
+            </div>
+
         </nav>
     )
 }

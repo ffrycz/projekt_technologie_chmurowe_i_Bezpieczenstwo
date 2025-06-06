@@ -26,7 +26,7 @@ export default function PostsList({posts}) {
 
     return (
         <div>
-            {posts && (
+            {posts ? (
                 <FixedSizeList
                     height={window.innerHeight - 130}
                     width={"100%"}
@@ -35,6 +35,8 @@ export default function PostsList({posts}) {
                 >
                     {renderRow}
                 </FixedSizeList>
+            ) : (
+                <div style={{ ...style }}>Brak postów do wyświetlenia</div>
             )}
         </div>
     );

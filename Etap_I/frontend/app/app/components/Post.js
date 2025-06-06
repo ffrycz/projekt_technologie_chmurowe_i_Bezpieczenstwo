@@ -5,6 +5,7 @@ import axios from "axios";
 
 export default function Post({id, author, code, description, date}) {
     const copyButton = useRef();
+    const { keycloak, initialized } = useKeycloak();
 
     const copyCode = () => {
         navigator.clipboard.writeText(code).then(() => {
@@ -22,7 +23,7 @@ export default function Post({id, author, code, description, date}) {
                     <div className="text-xs">{author}</div>
                     <p className={"text-xs"}>{date}</p>
                     <div>
-                        {keycloak.authenticated && keycloak.hasRealmRole("admin")  && (
+                        {keycloak.authenticated && keycloak.hasRealmRole("admin") || keycloak.tokenParsed.preffered_name === author (
                             <button onClick={()=>{
                                 axios.delete("http://localhost:5000/posts/", id)
                             }}><FaTrash color={"red"}/></button>
