@@ -37,7 +37,7 @@ export default function Navigation(account=null) {
                 {account && (
                     <div className={"flex flex-col justify-between"}>
                         <span>{account.name}</span>
-                        {/*<button className={"hover:underline hover:bg-gray-800 hover:text-white text-xs"} onClick={logOut}>LogOut</button>*/}
+                        <button className={"hover:underline hover:bg-gray-800 hover:text-white text-xs"} onClick={keycloak.logout}>LogOut</button>
                     </div>
                 )}
             </div>
