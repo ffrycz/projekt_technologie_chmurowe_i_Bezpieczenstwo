@@ -43,8 +43,20 @@ services:
   #   networks:
   #     - keycloak-network
 
+  backend:
+    build:
+      context: ./API1
+    container_name: flask-backend
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+    depends_on:
+      - keycloak
+
 volumes:
   keycloak-db-data:
 
 networks:
   keycloak-network:
+  app-network:
