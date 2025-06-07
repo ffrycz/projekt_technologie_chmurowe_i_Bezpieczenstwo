@@ -8,6 +8,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:secret@db:3306/pos
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 # Chroniony endpoint
 @app.route("/api/allPosts", methods=['GET'])
@@ -33,6 +36,17 @@ def create_post():
     db.session.add(new_post)
     db.session.commit()
     return jsonify({"message": "Post created"}), 201
+
+@app.route("/api/posts/<author>", methods=["GET"])
+@keycloak_protect
+def get_posts_by(author):
+    posts = Post.query.filter.filter_by(author=author).all()
+    return jsonify([{
+        "id": post.id,
+        "author": post.author,
+        "title": post.title,
+        "description": post.description
+    } for post in posts])
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
