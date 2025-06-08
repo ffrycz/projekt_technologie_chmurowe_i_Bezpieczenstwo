@@ -1,4 +1,5 @@
 // app/layout.js
+import React from "react";
 import './globals.css';
 import ClientAuthLayout from './components/ClientAuthLayout';
 export const metadata = {
@@ -9,7 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
-        <body className="antialiased">
+        <body className="antialiased h-max">
         <ClientAuthLayout>{children}</ClientAuthLayout>
         </body>
         </html>

@@ -34,7 +34,7 @@ services:
       - keycloak-network
 
   frontend:
-    build: ./frontend
+    build: ./frontend/app
     ports:
       - "3000:3000"
     networks:
@@ -43,14 +43,14 @@ services:
     environment:
       - NODE_ENV=production
     depends_on:
-      - flask-api
+      - backend
 
   backend:
     build:
       context: ./API1
     container_name: flask-backend
-    # ports:
-    #   - "5000:5000"
+    ports:
+      - "5000:5000"
     networks:
       - keycloak-network
       - app-network
