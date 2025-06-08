@@ -8,9 +8,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:secret@db:3306/pos
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
-@app.before_first_request
-def create_tables():
-    db.create_all()
+# @app.before_first_request
+# def create_tables():
+#     db.create_all()
 
 # Chroniony endpoint
 @app.route("/api/allPosts", methods=['GET'])
@@ -49,4 +49,4 @@ def get_posts_by(author):
     } for post in posts])
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
