@@ -46,8 +46,7 @@ services:
       - backend
 
   backend:
-    build:
-      context: ./API1
+    image: ffrycz/projekt-backend:1.0
     container_name: flask-backend
     ports:
       - "5000:5000"

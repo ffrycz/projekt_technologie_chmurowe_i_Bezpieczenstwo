@@ -28,7 +28,9 @@ export default function Navigation({ setSearchQuery}) {
             </div>
             <div className={"flex flex-col"}>
             <p className={"text-xl font-bold"}>Witaj {keycloak.tokenParsed?.preferred_username}!</p>
-            {keycloak.authenticated && keycloak.hasRealmRole("admin") || keycloak.hasRealmRole("verified_company") && (
+            {keycloak.authenticated &&
+                keycloak.hasRealmRole("admin") || keycloak.hasRealmRole("verified_company") &&
+                (
                 <button className={"bg-blue-800 rounded-2xl mt-2"} onClick={() => {
                     router.push("/create")
                 }}>
