@@ -8,47 +8,54 @@ export default function Home({ searchQuery}) {
   const [posts, setPosts] = useState([]);
   const { keycloak, initialized } = useKeycloak();
 
+  const generatePosts = (response) => {
+    const responseData = response.data.posts || response.data;
+
+    const groupedPosts = responseData.reduce((acc, elem) => {
+      acc[elem.date] = acc[elem.date] || [];
+      acc[elem.date].push(elem);
+      return acc;
+    }, {});
+
+    const sortedPosts = Object.entries(groupedPosts)
+        .sort(([dateA], [dateB]) => new Date(dateB) - new Date(dateA))
+        .map(([_, posts]) => posts)
+        .flat();
+
+    setPosts(sortedPosts);
+  }
+
   useEffect(() => {
     if (!keycloak?.token) return;
 
     const fetchPosts = async () => {
-      try {
-        let response;
 
         if (searchQuery) {
-          response = await axios.get(
-              `http://flask-api:5000/api/posts/${encodeURIComponent(searchQuery)}`,
+          axios.get(
+              `/api/posts/${encodeURIComponent(searchQuery)}`,
               {
                 headers: {
                   Authorization: `Bearer ${keycloak.token}`,
                 },
               }
-          );
+          ).then((response) => {
+            console.log("Response data:", response.data);
+            generatePosts(response);
+          }).catch((error) => {
+            console.error("Error fetching posts:", error);
+          });
         } else {
-          response = await axios.get(`http://flask-api:5000/api/allPosts`, {
+          axios.get(`/api/allPosts`, {
             headers: {
               Authorization: `Bearer ${keycloak.token}`,
             },
+          }).then((response) => {
+            generatePosts(response);
+          }).catch((error) => {
+            console.error("Error fetching posts:", error);
           });
         }
 
-        const responseData = response.data.posts || response.data;
-
-        const groupedPosts = responseData.reduce((acc, elem) => {
-          acc[elem.date] = acc[elem.date] || [];
-          acc[elem.date].push(elem);
-          return acc;
-        }, {});
-
-        const sortedPosts = Object.entries(groupedPosts)
-            .sort(([dateA], [dateB]) => new Date(dateB) - new Date(dateA))
-            .map(([_, posts]) => posts)
-            .flat();
-
-        setPosts(sortedPosts);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
     };
 
     fetchPosts();

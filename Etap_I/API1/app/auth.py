@@ -10,7 +10,7 @@ REALM = "code_center_realm"
 AUDIENCE = "code_app_api"
 
 JWKS_URL = f"{KEYCLOAK_URL}/realms/{REALM}/protocol/openid-connect/certs"
-ISSUER = f"{KEYCLOAK_URL}/realms/{REALM}"
+ISSUER = f"http://localhost:8080/realms/{REALM}"
 
 jwk_client = PyJWKClient(JWKS_URL)
 

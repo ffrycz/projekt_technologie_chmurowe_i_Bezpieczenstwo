@@ -18,7 +18,6 @@ export default function PostsList({posts}) {
                     author={post.author}
                     code={post.code}
                     description={post.description}
-                    date={post.date}
                 />
             </div>
         );

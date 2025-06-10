@@ -4,13 +4,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useKeycloak } from "@react-keycloak/web";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function CreatePostPage() {
   const { keycloak, initialized } = useKeycloak();
   const [failed, setFailed] = useState(false);
   const [success, setSuccess] = useState(false);
-  const router = useRouter();
 
   const formik = useFormik({
     initialValues: {
@@ -62,7 +60,7 @@ export default function CreatePostPage() {
               <p className={"text-xs text-red-600"}>Something went wrong</p>
             )}
             {success && (
-              <p className={"text-xs text-red-600"}>Code posted successfully</p>
+              <p className={"text-xs text-white font-bold"}>Code posted successfully</p>
             )}
             <form
               onSubmit={formik.handleSubmit}

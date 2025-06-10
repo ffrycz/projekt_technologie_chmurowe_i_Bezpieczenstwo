@@ -4,7 +4,7 @@ from auth import keycloak_protect
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:secret@db:3306/posts_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:superSecret@db:3306/posts_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -20,7 +20,7 @@ def get_all_posts():
     return jsonify([{
         "id": post.id,
         "author": post.author,
-        "title": post.title,
+        "code": post.code,
         "description": post.description
     } for post in posts])
 
@@ -30,7 +30,7 @@ def create_post():
     data = request.get_json()
     new_post = Post(
         author=data["author"],
-        title=data["code"],
+        code=data["code"],
         description=data["description"]
     )
     db.session.add(new_post)
@@ -44,7 +44,7 @@ def get_posts_by(author):
     return jsonify([{
         "id": post.id,
         "author": post.author,
-        "title": post.title,
+        "code": post.code,
         "description": post.description
     } for post in posts])
 

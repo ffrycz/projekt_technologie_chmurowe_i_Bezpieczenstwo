@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS posts (
+    id INT NOT NULL AUTO_INCREMENT,
+    author VARCHAR(64) NOT NULL,
+    code VARCHAR(128) NOT NULL,
+    description VARCHAR(512) NOT NULL,
+    PRIMARY KEY (id)
+);
+
