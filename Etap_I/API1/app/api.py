@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, g
 from db_connector import db, Post
 from auth import keycloak_protect
 
@@ -44,6 +44,24 @@ def get_posts_by(author):
         "code": post.code,
         "description": post.description
     } for post in posts])
+
+@app.route("/api/posts/<int:id>", methods=['DELETE'])
+@keycloak_protect
+def delete_post(id):
+    post = Post.query.get(id)
+    if not post:
+        return jsonify({"error": "Post not found"}), 404
+    
+    user = g.user.get("preferred_username")
+    roles = g.user.get("realm_access", {}).get("roles", [])
+
+    if not (("verified_company" in roles and post.author == user) or "admin" in roles):
+        return jsonify({"error": "Unauthorized"}), 403
+    
+    db.session.delete(post)
+    db.session.commit()
+    return jsonify({"message": f"Post with id {id} deleted"}), 200
+    
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

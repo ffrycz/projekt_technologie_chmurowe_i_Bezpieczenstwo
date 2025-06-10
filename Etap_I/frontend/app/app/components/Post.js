@@ -3,7 +3,7 @@ import { useKeycloak } from "@react-keycloak/web";
 import { FaTrash } from "react-icons/fa";
 import axios from "axios";
 
-export default function Post({ id, author, code, description }) {
+export default function Post({ id, author, code, description, onDelete }) {
   const copyButton = useRef();
   const { keycloak, initialized } = useKeycloak();
 
@@ -46,6 +46,8 @@ export default function Post({ id, author, code, description }) {
                         headers: {
                           Authorization: `Bearer ${keycloak.token}`,
                         },
+                      }).then(() => {
+                        onDelete();
                       });
                     }}
                 >

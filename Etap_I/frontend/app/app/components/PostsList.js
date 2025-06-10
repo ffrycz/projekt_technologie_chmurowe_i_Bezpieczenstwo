@@ -4,11 +4,11 @@ import Post from "@/app/components/Post";
 import React from "react";
 import { useEffect, useState } from "react";
 
-export default function PostsList({posts}) {
+export default function PostsList({posts, setPosts}) {
     const [size, setSize] = useState({height:1000, width:900});
     useEffect(() => {
         const handleResize = () => {
-            setSize({ height: window.innerHeight - 100, width: window.innerWidth });
+            setSize({ height: window.innerHeight - 110, width: window.innerWidth });
         };
 
         handleResize();
@@ -32,6 +32,9 @@ export default function PostsList({posts}) {
                     author={post.author}
                     code={post.code}
                     description={post.description}
+                    onDelete={() => {
+                        setPosts(prev => prev.filter(p => p.id !== post.id));
+                    }}
                 />
             </div>
         );

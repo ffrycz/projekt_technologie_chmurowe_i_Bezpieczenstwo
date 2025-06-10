@@ -1,11 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, g
 from functools import wraps
 from jwt import decode, PyJWKClient
 import sys
 import traceback
 
 # Konfiguracja Keycloak
-KEYCLOAK_URL = "http://keycloak:8080" # Todo Upewnic się, że to dobrze
+KEYCLOAK_URL = "http://keycloak:8080" 
 REALM = "code_center_realm"
 AUDIENCE = "code_app_api"
 
@@ -32,7 +32,7 @@ def keycloak_protect(f):
                 audience=AUDIENCE,
                 issuer=ISSUER
             )
-            request.user = decoded  # Jeśli chcesz mieć dostęp do danych użytkownika
+            g.user = decoded  # Jeśli chcesz mieć dostęp do danych użytkownika
         except Exception as e:
             print("🔐 JWT validation error:", file=sys.stderr)
             traceback.print_exc()
