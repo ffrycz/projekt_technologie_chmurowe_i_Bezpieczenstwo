@@ -4,7 +4,7 @@ import React from "react";
 import { useKeycloak } from "@react-keycloak/web";
 import KeycloakWrapper from "./KeycloakWrapper";
 import Navigation from "./Navigation";
-import { useState } from "react";
+import {SearchProvider} from "@/context/SearchContext";
 
 export default function ClientAuthLayout({ children }) {
   return (
@@ -16,17 +16,15 @@ export default function ClientAuthLayout({ children }) {
 
 function AuthContent({ children }) {
   const { keycloak, initialized } = useKeycloak();
-  const [searchQuery, setSearchQuery] = useState("");
 
   // if (!initialized) return <p>Loading Keycloak...</p>;
 
   return keycloak.authenticated ? (
     <div className="flex w-full h-max justify-center align-middle flex-col">
-      <Navigation setSearchQuery={setSearchQuery} />
-      {children &&
-        typeof children === "object" &&
-        "type" in children &&
-        React.cloneElement(children, { searchQuery })}
+      <SearchProvider>
+        <Navigation />
+        {children}
+      </SearchProvider>
     </div>
   ) : (
     <div className={"flex w-full h-max"}>

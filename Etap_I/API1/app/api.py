@@ -37,7 +37,7 @@ def create_post():
 @app.route("/api/posts/<author>", methods=["GET"])
 @keycloak_protect
 def get_posts_by(author):
-    posts = Post.query.filter.filter_by(author=author).all()
+    posts = Post.query.filter_by(author=author).all()
     return jsonify([{
         "id": post.id,
         "author": post.author,

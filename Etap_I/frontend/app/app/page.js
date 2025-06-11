@@ -3,47 +3,38 @@ import PostsList from "./components/PostsList";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useKeycloak } from "@react-keycloak/web";
+import {useSearch} from "@/context/SearchContext";
 
-export default function Home({ searchQuery }) {
+export default function Home() {
   const [posts, setPosts] = useState([]);
   const { keycloak, initialized } = useKeycloak();
+  const { result, search } = useSearch();
 
 
   useEffect(() => {
     if (!keycloak?.token) return;
 
     const fetchPosts = async () => {
-      if (searchQuery) {
+      if (result?.length > 0) {
+        setPosts(result);
+      }else{
         axios
-          .get(`/api/posts/${encodeURIComponent(searchQuery)}`, {
-            headers: {
-              Authorization: `Bearer ${keycloak.token}`,
-            },
-          })
-          .then((response) => {
-            setPosts(response.data.reverse());
-          })
-          .catch((error) => {
-            console.error("Error fetching posts:", error);
-          });
-      } else {
-        axios
-          .get(`/api/allPosts`, {
-            headers: {
-              Authorization: `Bearer ${keycloak.token}`,
-            },
-          })
-          .then((response) => {
-            setPosts(response.data.reverse());
-          })
-          .catch((error) => {
-            console.error("Error fetching posts:", error);
-          });
+            .get(`/api/allPosts`, {
+              headers: {
+                Authorization: `Bearer ${keycloak.token}`,
+              },
+            })
+            .then((response) => {
+              setPosts(response.data.reverse());
+            })
+            .catch((error) => {
+              console.error("Error fetching posts:", error);
+            });
       }
     };
 
     fetchPosts();
-  }, [searchQuery, keycloak]);
+  }, [result, keycloak]);
 
   return (
       <>

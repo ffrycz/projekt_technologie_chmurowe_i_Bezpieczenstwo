@@ -4,7 +4,6 @@ from jwt import decode, PyJWKClient
 import sys
 import traceback
 
-# Konfiguracja Keycloak
 KEYCLOAK_URL = "http://keycloak:8080" 
 REALM = "code_center_realm"
 AUDIENCE = "code_app_api"
@@ -32,9 +31,9 @@ def keycloak_protect(f):
                 audience=AUDIENCE,
                 issuer=ISSUER
             )
-            g.user = decoded  # Jeśli chcesz mieć dostęp do danych użytkownika
+            g.user = decoded
         except Exception as e:
-            print("🔐 JWT validation error:", file=sys.stderr)
+            print("JWT validation error:", file=sys.stderr)
             traceback.print_exc()
             return jsonify({"error": str(e)}), 401
 
