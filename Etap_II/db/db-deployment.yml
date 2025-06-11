@@ -16,6 +16,8 @@ spec:
         - name: db
           image: mysql:8
           env:
+            - name: MYSQL_DATABASE
+              value: posts_db
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:

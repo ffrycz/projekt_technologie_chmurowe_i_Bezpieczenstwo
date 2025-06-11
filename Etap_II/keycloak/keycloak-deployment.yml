@@ -15,7 +15,7 @@ spec:
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.2.5
-          args: ["start-dev", "--import-realm", "--features=scripts"]
+          args: ["start-dev", "--import-realm"]
           ports:
             - containerPort: 8080
           env:
@@ -33,7 +33,7 @@ spec:
                   name: keycloak-secrets
                   key: db-password
             - name: KC_FEATURES
-              value: scripts
+              value: "scripts"
             - name: KC_HOSTNAME_STRICT
               value: "false"
             - name: KEYCLOAK_ADMIN
