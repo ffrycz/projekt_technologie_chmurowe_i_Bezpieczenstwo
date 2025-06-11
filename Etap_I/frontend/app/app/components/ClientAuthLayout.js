@@ -17,8 +17,6 @@ export default function ClientAuthLayout({ children }) {
 function AuthContent({ children }) {
   const { keycloak, initialized } = useKeycloak();
 
-  // if (!initialized) return <p>Loading Keycloak...</p>;
-
   return keycloak.authenticated ? (
     <div className="flex w-full h-max justify-center align-middle flex-col">
       <SearchProvider>

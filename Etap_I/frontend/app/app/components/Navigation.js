@@ -29,16 +29,15 @@ export default function Navigation() {
                     <FaSearch color={"white"}/></button>
             </div>
             <div className={"flex flex-col"}>
-            <p className={"text-xl font-bold"}>Witaj {keycloak.tokenParsed?.preferred_username}!</p>
-            {keycloak.authenticated &&
-                keycloak.hasRealmRole("admin") || keycloak.hasRealmRole("verified_company") &&
+            <p className={"text-xl font-bold"}>Hello {keycloak.tokenParsed?.preferred_username}!</p>
+                {(keycloak.authenticated && keycloak.hasRealmRole("admin")) || keycloak.hasRealmRole("verified_company") ?
                 (
-                <button className={"bg-blue-800 rounded-2xl mt-2"} onClick={() => {
+                <button className={"bg-blue-800 rounded-2xl mt-2 pl-5 pr-5 w-max "} onClick={() => {
                     router.push("/create")
                 }}>
                     + Add new code
                 </button>
-            )}
+            ) : null}
             <div>
                 {initialized && (
                     <div className={"flex flex-col justify-between"}>

@@ -52,7 +52,7 @@ export default function PostsList({posts, setPosts}) {
                     {renderRow}
                 </FixedSizeList>
             ) : (
-                <div className={"w-12 h-12 text-white"}>Brak postów do wyświetlenia</div>
+                <div className={"w-12 h-12 text-white"}>No posts to display</div>
             )}
         </div>
     );

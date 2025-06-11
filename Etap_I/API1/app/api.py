@@ -1,15 +1,16 @@
+import os
 from flask import Flask, request, jsonify, g
 from db_connector import db, Post
 from auth import keycloak_protect
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:superSecret@db:3306/posts_db'
+db_password = os.getenv("MYSQL_ROOT_PASSWORD")
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:{db_password}@db:3306/posts_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-# Chroniony endpoint
 @app.route("/api/allPosts", methods=['GET'])
 @keycloak_protect
 def get_all_posts():
@@ -25,6 +26,13 @@ def get_all_posts():
 @keycloak_protect
 def create_post():
     data = request.get_json()
+
+    user = g.user.get("preferred_username")
+    roles = g.user.get("realm_access", {}).get("roles", [])
+
+    if not (("verified_company" in roles and data["author"] == user) or "admin" in roles):
+        return jsonify({"error": "Unauthorized"}), 403
+    
     new_post = Post(
         author=data["author"],
         code=data["code"],
@@ -61,7 +69,10 @@ def delete_post(id):
     db.session.delete(post)
     db.session.commit()
     return jsonify({"message": f"Post with id {id} deleted"}), 200
-    
+
+@app.route('/health', methods=['GET'])
+def healthcheck():
+    return "OK", 200
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000)
