@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: db-init-script
+  name: mysql-init-config
 data:
   init.sql: |
     CREATE TABLE IF NOT EXISTS posts (

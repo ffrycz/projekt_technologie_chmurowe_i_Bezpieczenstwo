@@ -15,7 +15,12 @@ spec:
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.2.5
-          args: ["start-dev", "--import-realm"]
+          # !!! UWAGA:
+          # Dla PIERWSZEGO uruchomienia (gdy baza jest pusta i chcesz zaimportować realm):
+          # args: ["start-dev", "--import-realm", "--features=scripts"]
+          # Po udanym imporcie (sprawdź logi, upewnij się, że realm został zaimportowany),
+          # ZMIEŃ TE ARGS NA:
+          args: ["start-dev", "--features=scripts"] # To jest dla kolejnych uruchomień
           ports:
             - containerPort: 8080
           env:
@@ -36,9 +41,9 @@ spec:
               value: "scripts"
             - name: KC_HOSTNAME_STRICT
               value: "false"
-            - name: KEYCLOAK_ADMIN
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: admin
-            - name: KEYCLOAK_ADMIN_PASSWORD
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: keycloak-secrets

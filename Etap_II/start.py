@@ -1,5 +1,6 @@
 import subprocess
 import sys
+from time import sleep
 
 directories = [
     "api/",
@@ -9,11 +10,23 @@ directories = [
     "keycloak-db/"
 ]
 
-if sys.argv[1] == "1":
-    option = "apply"
-else:
-    option = "delete"
+def start():
+    for directory in directories:
+        print(f"Startuję {directory}...")
+        subprocess.run(["kubectl", "apply", "-f", directory], check=True)
+    print("Zaczekaj chwilę na pełne uruchomienie wszystkiego...")
+    sleep(15.0)
+    print("Teraz powinno już działać.")
 
-for directory in directories:
-    print(f"Startuję {directory}...")
-    subprocess.run(["kubectl", option, "-f", directory], check=True)
+def stop():
+    for directory in directories:
+        print(f"Zamykam {directory}...")
+        subprocess.run(["kubectl", "delete", "-f", directory], check=True)
+
+
+
+if sys.argv[1] == "1":
+    start()
+else:
+    stop()
+

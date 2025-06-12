@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: keycloak-db-pvc
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:

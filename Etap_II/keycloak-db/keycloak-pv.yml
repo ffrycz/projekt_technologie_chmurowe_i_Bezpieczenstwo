@@ -11,4 +11,4 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: "/var/lib/postgresql/data"
+    path: "/var/lib/postgresql/keycloak_data"

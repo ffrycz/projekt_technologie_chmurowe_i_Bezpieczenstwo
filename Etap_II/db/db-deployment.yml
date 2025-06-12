@@ -13,20 +13,26 @@ spec:
         app: db
     spec:
       containers:
-        - name: db
+        - name: mysql
           image: mysql:8
           env:
-            - name: MYSQL_DATABASE
-              value: posts_db
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: db-secret
                   key: db-password
+            - name: MYSQL_DATABASE
+              value: posts_db
           volumeMounts:
-            - name: init-script
-              mountPath: /docker-entrypoint-initdb.d
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+            - name: mysql-init-config
+              mountPath: /docker-entrypoint-initdb.d/init.sql
+              subPath: init.sql
       volumes:
-        - name: init-script
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-db-pvc
+        - name: mysql-init-config
           configMap:
-            name: db-init-script
+            name: mysql-init-config

@@ -25,3 +25,10 @@ spec:
                 secretKeyRef:
                   name: keycloak-secrets
                   key: db-password
+          volumeMounts:
+            - name: keycloak-db-storage
+              mountPath: /var/lib/postgresql/data # Domyślna ścieżka dla danych PostgreSQL
+      volumes:
+        - name: keycloak-db-storage
+          persistentVolumeClaim:
+            claimName: keycloak-db-pvc
