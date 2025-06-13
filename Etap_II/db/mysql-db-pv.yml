@@ -11,4 +11,4 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: "/var/lib/mysql/projekt_data"
+    path: "/opt/mysql_data"
