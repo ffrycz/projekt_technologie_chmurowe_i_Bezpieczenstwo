@@ -14,7 +14,10 @@ db_files_to_delete_on_stop = [
     "db/db-deployment.yml",
     "db/db-service.yml",
     "db/db-secret.yml",
-    "db/db-configMap.yml"
+    "db/db-configMap.yml",
+    "keycloak-db/kc-db-secret.yml",
+    "keycloak-db/postgres-deployment.yml",
+    "keycloak-db/postgres-service.yml"
 ]
 
 def start():
@@ -33,14 +36,15 @@ def stop():
 
 
     for directory in directories:
-        if directory != "db/":
+        if directory != "db/" and directory != "keycloak-db/":
             print(f"Zamykam zasoby w katalogu {directory}...")
             subprocess.run(["kubectl", "delete", "-f", directory, "--ignore-not-found=true"], check=True)
 
     print("Zakończono zamykanie zasobów.")
+    sys.exit(0)
 
-
-if sys.argv[1] == "1":
+if sys.argv[1] == "1" or sys.argv[1] == "on":
     start()
-else:
+elif sys.argv[1] == "0" or sys.argv[1] == "off":
     stop()
+

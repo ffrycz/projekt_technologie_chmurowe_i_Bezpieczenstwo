@@ -9,14 +9,14 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: $KC_DB_PASSWORD
     volumes:
-      - keycloak-db-data:/var/lib/postgresql/data
+      - /var/lib/postgresql/keycloak_data:/var/lib/postgresql/data
     networks:
       - keycloak-network
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.2.5
     container_name: keycloak
-    command: start-dev --import-realm
+    command: start-dev
     environment:
       KC_DB: postgres
       KC_DB_URL_HOST: keycloak-db
